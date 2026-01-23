@@ -9,8 +9,8 @@ gegooide dobbelstenen (array dice ) in App.vue door te geven
 aan ThrownDice .
 */
 
-const dice = defineModel('dice');
-
+//const dice = defineModel('dice');
+/*
 function rollDice() {
   for (let i = 0; i < 5; i++) {
     let randomNumber = Math.floor(Math.random() * 6 + 1);
@@ -19,8 +19,11 @@ function rollDice() {
   }
 
   //console.log(diceValues);
+}*/
+const model = defineModel();
+function update() {
+  model.value++;
 }
-
 /*
 import {reactive} from 'vue';
 //import {ref} from 'vue';
@@ -53,6 +56,7 @@ const countThrows = currentValue => {
 </script>
 
 <template>
+  <!--
   <section id="yahtzee">
     <table class="scoreblok">
       <thead>
@@ -63,7 +67,9 @@ const countThrows = currentValue => {
       </tr>
     </table>
     <button id="throw-button" @click="rollDice">Gooien!</button>
-  </section>
+  </section>-->
+  <div>Parent bount v-model is: {{ model }}</div>
+  <button @click="update">Increment</button>
 </template>
 
 <style scoped></style>
