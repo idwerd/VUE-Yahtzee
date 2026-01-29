@@ -1,20 +1,20 @@
 <script setup>
-/*
-Dit component is verantwoordelijk voor het tonen van de
-vijf gegooide dobbelstenen op het scherm en bevat ook de
-knop waarmee je de dobbelstenen kunt gooien.
-Alle logica voor het gooien en weergeven van de dobbelstenen
-bevindt zich in dit component. Gebruik een v-model om de
-gegooide dobbelstenen (array dice ) in App.vue door te geven
-aan ThrownDice .
-*/
+const diceValues = defineModel('diceValues');
+const count = defineModel('count');
 
-const diceValues = defineModel();
 function rollDice() {
-  for (let i = 0; i < 5; i++) {
-    let randomNumber = Math.floor(Math.random() * 6 + 1);
-    diceValues.value[i] = randomNumber;
+  for (let die in count.value) {
+    count.value[die] = 0;
   }
+
+  for (let i = 0; i < 5; i++) {
+    diceValues.value[i] = Math.floor(Math.random() * 6 + 1);
+  }
+  diceValues.value.forEach(countValues);
+}
+
+function countValues(currentValue) {
+  count.value[currentValue]++;
 }
 </script>
 

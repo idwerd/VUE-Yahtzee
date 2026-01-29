@@ -1,28 +1,9 @@
 <script setup>
-/*
-Dit component toont een tabel met alle mogelijke
-Yahtzee-scores. De array met gegooide dobbelstenen ( dice )
-wordt via een v-model doorgegeven van App.vue naar ScoreTable.
-Gebruik binnen ScoreTable computed properties om de mogelijke
-scores te berekenen op basis van de huidige waarden in de
-dice array en geef deze weer in de template van ScoreTable.
-*/
-
 import {computed} from 'vue';
 
-const diceValues = defineModel();
-const count = {
-  1: 0,
-  2: 0,
-  3: 0,
-  4: 0,
-  5: 0,
-  6: 0,
-};
-diceValues.value.forEach(function countValues(currentValue) {
-  count[currentValue]++;
-});
-console.table(count);
+const diceValues = defineModel('diceValues');
+const count = defineModel('count');
+
 const ones = computed(() => calculateScoresPartOne(1));
 const twos = computed(() => calculateScoresPartOne(2));
 const threes = computed(() => calculateScoresPartOne(3));
@@ -30,11 +11,11 @@ const fours = computed(() => calculateScoresPartOne(4));
 const fives = computed(() => calculateScoresPartOne(5));
 const sixs = computed(() => calculateScoresPartOne(6));
 const subtotal = computed(() => addAllDice());
-const bonus = computed(() => (addAllDice() >= 63 ? 35 : 0));
+const bonus = computed(() => (subtotal.value >= 63 ? 35 : 0));
 const totalPartOne = computed(() => subtotal.value + bonus.value);
 
 const calculateScoresPartOne = die => {
-  return count[die] * die;
+  return count.value[die] * die;
 };
 
 const threeOfAKind = computed(() => (checkIdenticals(3) ? addAllDice() : 0));
@@ -57,8 +38,8 @@ const totalPartTwo = computed(
 const total = computed(() => totalPartOne.value + totalPartTwo.value);
 
 const checkIdenticals = xOfAKind => {
-  for (let value in count) {
-    if (count[value] >= xOfAKind) {
+  for (let value in count.value) {
+    if (count.value[value] >= xOfAKind) {
       return true;
     }
   }
@@ -70,11 +51,11 @@ const checkIdenticals = xOfAKind => {
 const checkFullHouse = () => {
   let fullHouseTwo = false;
   let fullHouseThree = false;
-  for (let value in count) {
-    if (count[value] === 2) {
+  for (let value in count.value) {
+    if (count.value[value] === 2) {
       fullHouseTwo = true;
     }
-    if (count[value] === 3) {
+    if (count.value[value] === 3) {
       fullHouseThree = true;
     }
   }
@@ -87,10 +68,10 @@ const checkFullHouse = () => {
 const checkStraights = sequence => {
   let counter = 0;
 
-  for (let value in count) {
-    if (count[value] == 0) {
+  for (let value in count.value) {
+    if (count.value[value] == 0) {
       counter = 0;
-    } else if (count[value] > 0) {
+    } else if (count.value[value] > 0) {
       counter++;
     }
     if (counter == sequence) {
